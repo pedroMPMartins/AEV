@@ -23,6 +23,18 @@ This repository holds all materials and documentation developed for the AEV clas
 - **scripts**: folder holding scripts I made to solve CTFs. Some are generic, others may need small changes to adapt to the actual new challenge.
   - **[wp2shell_exploit.py](scripts/wp2shell_exploit.py)**: exploit for WordPress. It does the whole chain and then creates a malicious `shell.php` inside, allowing for Remote Code Execution. Detailed documentation on this exploit can be found [here](https://github.com/pedroMPMartins/wordpress_exploit).
   - **[wp2shell_shell.py](scripts/wp2shell_shell.py)**: connects to the `shell.php` that the exploit left inside the WordPress. It then allows you to run anything.
+  - **[sqli_blind_droplite.py](scripts/sqli_blind_droplite.py)**: blind SQL injection character-by-character extractor for DropLite ([Port 8033](services/8033.md)).
+  - **[sqli_filter_bypass_dailybyte.py](scripts/sqli_filter_bypass_dailybyte.py)**: blind SQL injection with keyword filter bypass for The Daily Byte ([Port 8034](services/8034.md)).
+  - **[sqli_time_blind_guestbook.py](scripts/sqli_time_blind_guestbook.py)**: time-based blind SQL injection harness for Guestbook ([Port 8035](services/8035.md)).
+  - **[sqli_reflection_dumper_guestbook.py](scripts/sqli_reflection_dumper_guestbook.py)**: reflection-based database schema and table dumper for Guestbook ([Port 8035](services/8035.md)).
+  - **[oracle_size_extractor.sh](scripts/oracle_size_extractor.sh)**: bash script for character-by-character HTTP response size oracle extraction ([Port 8016](services/8016.md)).
+  - **[filter_bypass_tester_shelftag.py](scripts/filter_bypass_tester_shelftag.py)**: multi-phase reflection, command injection, and newline filter bypass tester ([Port 8041](services/8041.md)).
+  - **[cmd_inject_fuzzer_gatekeeper.py](scripts/cmd_inject_fuzzer_gatekeeper.py)**: command and argument injection payload fuzzer with rate throttling ([Port 8053](services/8053.md)).
+  - **[auth_token_harvester.py](scripts/auth_token_harvester.py)**: automated sequential user and JWT token enumeration script ([Port 8015](services/8015.md)).
+  - **[pickle_payload_gen.py](scripts/pickle_payload_gen.py)**: Python pickle deserialization RCE payload generator ([Port 8051](services/8051.md)).
+  - **[basic_auth_bruteforce.py](scripts/basic_auth_bruteforce.py)**: HTTP Basic authentication dictionary attack tool for routers and portals ([Port 8060](services/8060.md)).
+  - **[snmp_udp_raw_walker.py](scripts/snmp_udp_raw_walker.py)**: raw UDP socket SNMPv2c ASN.1 OID encoder and MIB tree walker ([Port 8024](services/8024.md)).
+  - **[user_enum_8014.sh](scripts/user_enum_8014.sh)**: bash script for sequential API user enumeration with stopping conditions ([Port 8014](services/8014.md)).
 
 
 ## Challenges
