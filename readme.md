@@ -16,6 +16,7 @@ This repository holds all materials and documentation developed for the AEV clas
   - **[ffuf.md](tool_docs/ffuf.md)**: ffuf documentation. Used to find information on many different things, such as endpoints, files and find possible variables that URLs take
   - **[git-dumper.md](tool_docs/git-dumper.md)**: git-dumper documentation. Used to dump and reconstruct exposed Git repositories from HTTP servers.
   - **[curl.md](tool_docs/curl.md)**: curl documentation. Used to perform manual HTTP requests, handle cookies, custom headers, and test payloads.
+  - **[snmp.md](tool_docs/snmp.md)**: snmpwalk and snmpget documentation. Used to query and walk SNMP MIB trees and debug UDP network responses.
 
 - **services**: documentation on the different CTF challenges solved during the subject's duration. They are organized by the number of the port (for example, `8010.md`). Each document holds what I found in said port, and my though process, tools and all sorts of things I used to solve the challenge and get the flag.
 
