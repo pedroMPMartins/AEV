@@ -18,6 +18,8 @@ This repository holds all materials and documentation developed for the AEV clas
 - **services**: documentation on the different CTF challenges solved during the subject's duration. They are organized by the number of the port (for example, `8010.md`). Each document holds what I found in said port, and my though process, tools and all sorts of things I used to solve the challenge and get the flag.
 
 - **scripts**: folder holding scripts I made to solve CTFs. Some are generic, others may need small changes to adapt to the actual new challenge.
+  - **[wp2shell_exploit.py](scripts/wp2shell_exploit.py)**: exploit for WordPress. It does the whole chain and then creates a malicious `shell.php` inside, allowing for Remote Code Execution.
+  - **[wp2shell_shell.py](scripts/wp2shell_shell.py)**: connects to the `shell.php` that the exploit left inside the WordPress. It then allows you to run anything.
 
 
 ## Challenges
