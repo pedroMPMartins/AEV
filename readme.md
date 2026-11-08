@@ -6,10 +6,19 @@ This repository holds all materials and documentation developed for the AEV clas
 
 ## Table of Contents
 
+- [Cheat Sheet](#cheat-sheet)
 - [Repository Structure](#repository-structure)
 - [Challenges](#challenges)
 
+## Cheat Sheet
+
+A high-speed, copy-paste reference guide created to maximize solving speed during timed practical evaluations. It aggregates battle-tested payloads, filter bypasses, file reader alternatives, and a 60-second port triage methodology derived directly from the lab challenges.
+
+- **[cheatsheet.md](cheatsheet.md)**: Full CTF Rapid Exploitation Cheat Sheet.
+
 ## Repository Structure
+
+- **[cheatsheet.md](cheatsheet.md)**: high-speed copy-paste reference containing proven payloads, filter bypasses, and an initial 60-second port triage checklist.
 
 - **tool_docs**: documentation for different tools that I use.
   - **[nmap.md](tool_docs/nmap.md)**: nmap documentation. Used to find services, and explore networks.
