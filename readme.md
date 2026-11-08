@@ -14,6 +14,7 @@ This repository holds all materials and documentation developed for the AEV clas
 - **tool_docs**: documentation for different tools that I use.
   - **[nmap.md](tool_docs/nmap.md)**: nmap documentation. Used to find services, and explore networks.
   - **[ffuf.md](tool_docs/ffuf.md)**: ffuf documentation. Used to find information on many different things, such as endpoints, files and find possible variables that URLs take
+  - **[git-dumper.md](tool_docs/git-dumper.md)**: git-dumper documentation. Used to dump and reconstruct exposed Git repositories from HTTP servers.
 
 - **services**: documentation on the different CTF challenges solved during the subject's duration. They are organized by the number of the port (for example, `8010.md`). Each document holds what I found in said port, and my though process, tools and all sorts of things I used to solve the challenge and get the flag.
 
