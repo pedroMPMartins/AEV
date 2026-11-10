@@ -45,6 +45,10 @@ A high-speed, copy-paste reference guide created to maximize solving speed durin
   - **[basic_auth_bruteforce.py](scripts/basic_auth_bruteforce.py)**: HTTP Basic authentication dictionary attack tool for routers and portals ([Port 8060](services/8060.md)).
   - **[snmp_udp_raw_walker.py](scripts/snmp_udp_raw_walker.py)**: raw UDP socket SNMPv2c ASN.1 OID encoder and MIB tree walker ([Port 8024](services/8024.md)).
   - **[user_enum_8014.sh](scripts/user_enum_8014.sh)**: bash script for sequential API user enumeration with stopping conditions ([Port 8014](services/8014.md)).
+  - **[jwt_hs256_cracker.py](scripts/jwt_hs256_cracker.py)**: offline HS256 JWT secret brute-forcer and administrative token generator ([Port 8067](services/8067.md)).
+  - **[session_time_bruteforce.py](scripts/session_time_bruteforce.py)**: predictable timestamp-based SHA-1 session token generator and harness ([Port 8068](services/8068.md)).
+  - **[user_enum_forgot_pwd.py](scripts/user_enum_forgot_pwd.py)**: multi-threaded user enumeration tool exploiting response deltas on password reset forms ([Port 8070](services/8070.md)).
+  - **[form_login_bruteforce.py](scripts/form_login_bruteforce.py)**: HTTP POST form dictionary brute-forcer with automatic field detection and curated fallback ([Port 8072](services/8072.md)).
 
 
 ## Challenges
