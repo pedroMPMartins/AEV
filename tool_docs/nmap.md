@@ -119,3 +119,8 @@ Really intrusive scan for a specific port:
 ```bash
 sudo nmap -A -sV --version-intensity 7 -O --osscan-guess -p <port> -T4 --script vuln,vulners -oA full_intrusive_scan <target>
 ```
+
+Without the need for root permissions:
+```bash
+nmap -sT -sV --version-intensity 7 -p <port> -T4 --script vuln,vulners -oA unprivileged_scan <target>
+```
