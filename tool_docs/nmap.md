@@ -113,3 +113,9 @@ This is what each component does:
     *   **`vuln`**: A broad category of scripts that check for specific known vulnerabilities and misconfigurations.
     *   **`vulners`**: A powerful script that takes the detected service versions and cross-references them against the extensive **Vulners** database (and other sources) to return CVE IDs and CVSS scores.
 *   **`-oA full_intrusive_scan`**: Saves the output in all three major formats (normal, XML, and grepable) with the base name `full_intrusive_scan` for easy reporting and parsing later.
+
+
+Really intrusive scan for a specific port:
+```bash
+sudo nmap -A -sV --version-intensity 7 -O --osscan-guess -p <port> -T4 --script vuln,vulners -oA full_intrusive_scan <target>
+```
