@@ -20,9 +20,7 @@ A high-speed, copy-paste reference guide created to maximize solving speed durin
 
 - **[cheatsheet.md](cheatsheet.md)**: high-speed copy-paste reference containing proven payloads, filter bypasses, and an initial 60-second port triage checklist.
 
-- **[useful_urls.md](useful_urls.md)**: compilation of useful URLs and links (including how to get some word lists).
-
-for parameters and how to get the rockyou).
+- **[useful_urls.md](useful_urls.md)**: compilation of useful URLs and links (including how to get some word lists, such as parameters and how to get the rockyou).
 
 - **tool_docs**: documentation for different tools that I use.
   - **[nmap.md](tool_docs/nmap.md)**: nmap documentation. Used to find services, and explore networks.
